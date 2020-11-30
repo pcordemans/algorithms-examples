@@ -31,28 +31,24 @@ class DoubleLinkedList:
         self.__trailer.setPrev(self.__header)
     
     def isEmpty(self):
-        return isinstance(self.__header.next(), _Sentinel)
+        return self.__header.next() == self.__trailer
 
     def addFront(self, element):
         node = _Node(self.__header, self.__header.next(), element)
-        self.__header.next().setPrev(node)
-        self.__header.setNext(node)        
+        node.prev().setNext(node)
+        node.next().setPrev(node)
         return self
 
     def addBack(self, element):
         node = _Node(self.__trailer.prev(), self.__trailer, element)
-        self.__trailer.prev().setNext(node)
-        self.__trailer.setPrev(node)
+        node.prev().setNext(node)
+        node.next().setPrev(node)
         return self
 
     def front(self):
-        if self.isEmpty():
-            return None
         return self.__header.next().get()
 
     def back(self):
-        if self.isEmpty():
-            return None
         return self.__trailer.prev().get()
 
     def removeFront(self):
