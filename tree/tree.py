@@ -13,6 +13,9 @@ class _TreeNode:
     def parent(self):
         return self._parent
 
+    def isRoot(self):
+        return self._parent is None
+
 class _File(_TreeNode):
     def __init__(self, name, parentDirectory, size):
         super().__init__(name, parentDirectory)
@@ -67,12 +70,9 @@ class Tree:
 
     def mkdir(self, name):
         self.__current.addChild(_Directory(name, self.__current))
-
-    def __isRoot(self, node):
-        return node == self.__root
-    
+   
     def cd(self, param):
-        if param == ".." and not self.__isRoot(self.__current):
+        if param == ".." and not self.__current.isRoot():
             self.__current = self.__current.parent()
         else:
             node = self.__current.find(param)
