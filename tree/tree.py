@@ -10,6 +10,9 @@ class _TreeNode:
     def element(self):
         pass
 
+    def parent(self):
+        return self._parent
+
 class _File(_TreeNode):
     def __init__(self, name, parentDirectory, size):
         super().__init__(name, parentDirectory)
@@ -41,6 +44,13 @@ class _Directory(_TreeNode):
     def element(self):
         return "d: " + self._element
 
+    def find(self, name):
+        node = None
+        for child in self._children:
+            if child._element == name:
+                node = child
+        return node
+
 class Tree:
     def __init__(self):
         self.__root = _Directory("/", None)
@@ -56,4 +66,17 @@ class Tree:
         self.__current.addChild(_File(name, self.__current, size))
 
     def mkdir(self, name):
-        self.__current.addChild(_Directory(name, self.__current))  
+        self.__current.addChild(_Directory(name, self.__current))
+
+    def __isRoot(self, node):
+        return node == self.__root
+    
+    def cd(self, param):
+        if param == ".." and not self.__isRoot(self.__current):
+            self.__current = self.__current.parent()
+        else:
+            node = self.__current.find(param)
+            if node is None:
+                return
+            else:
+                self.__current = node

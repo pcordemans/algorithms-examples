@@ -22,3 +22,19 @@ def test_mkdir():
     t.mkdir("anotherdirectory")
     assert t.size() == 3
     assert t.ls() == ["d: directory", "d: anotherdirectory"]
+
+def test_touch_and_mkdir():
+    t = Tree()
+    t.mkdir("directory")
+    t.touch("file", 42)
+    assert t.size() == 44
+    assert t.ls() == ["d: directory", "f: file"]
+
+def test_cd():
+    t = Tree()
+    t.mkdir("top")
+    t.cd("top")
+    t.touch("fileintop", 42)
+    assert t.ls() == ["f: fileintop"]
+    t.cd("..")
+    assert t.ls() == ["d: top"]
